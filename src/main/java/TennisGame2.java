@@ -1,14 +1,15 @@
+import java.io.Console;
 
 public class TennisGame2 implements TennisGame
 {
     private int pointPlayer1 = 0;
     private int pointPlayer2 = 0;
 
-    
-    private String P1res = "";
-    private String P2res = "";
-    private String playerName1;
-    private String playerName2;
+    private String resPlayer1 = "";
+    private String resPlayer2 = "";
+
+    private final String playerName1;
+    private final String playerName2;
 
 
     public TennisGame2(String player1Name, String player2Name) {
@@ -18,92 +19,103 @@ public class TennisGame2 implements TennisGame
 
     public String getScore(){
         String score = "";
-        if (pointPlayer1 == pointPlayer2 && pointPlayer1 < 4)
-        {
-            if (pointPlayer1==0)
-                score = "Love";
-            if (pointPlayer1==1)
-                score = "Fifteen";
-            if (pointPlayer1==2)
-                score = "Thirty";
-            score += "-All";
-        }
-        if (pointPlayer1==pointPlayer2 && pointPlayer1>=3)
-            score = "Deuce";
-        
-        if (pointPlayer1 > 0 && pointPlayer2==0)
-        {
-            if (pointPlayer1==1)
-                P1res = "Fifteen";
-            if (pointPlayer1==2)
-                P1res = "Thirty";
-            if (pointPlayer1==3)
-                P1res = "Forty";
-            
-            P2res = "Love";
-            score = P1res + "-" + P2res;
-        }
-        if (pointPlayer2 > 0 && pointPlayer1==0)
-        {
-            if (pointPlayer2==1)
-                P2res = "Fifteen";
-            if (pointPlayer2==2)
-                P2res = "Thirty";
-            if (pointPlayer2==3)
-                P2res = "Forty";
-            
-            P1res = "Love";
-            score = P1res + "-" + P2res;
-        }
-        
-        if (pointPlayer1>pointPlayer2 && pointPlayer1 < 4)
-        {
-            if (pointPlayer1==2)
-                P1res="Thirty";
-            if (pointPlayer1==3)
-                P1res="Forty";
-            if (pointPlayer2==1)
-                P2res="Fifteen";
-            if (pointPlayer2==2)
-                P2res="Thirty";
-            score = P1res + "-" + P2res;
-        }
-        if (pointPlayer2>pointPlayer1 && pointPlayer2 < 4)
-        {
-            if (pointPlayer2==2)
-                P2res="Thirty";
-            if (pointPlayer2==3)
-                P2res="Forty";
-            if (pointPlayer1==1)
-                P1res="Fifteen";
-            if (pointPlayer1==2)
-                P1res="Thirty";
-            score = P1res + "-" + P2res;
-        }
-        
-        if (pointPlayer1 > pointPlayer2 && pointPlayer2 >= 3)
-        {
-            score = "Advantage player1";
-        }
-        
-        if (pointPlayer2 > pointPlayer1 && pointPlayer1 >= 3)
-        {
-            score = "Advantage player2";
-        }
-        
-        if (pointPlayer1>=4 && pointPlayer2>=0 && (pointPlayer1-pointPlayer2)>=2)
+        score = getScoreTie();
+        score = getScoreFrom0to3(score);
+        int valor=pointPlayer1-pointPlayer2;
+        score = getScoreGreaterthan4(score,valor);
+        return score;
+    }
+
+    private String getScoreGreaterthan4(String score,int valor) {
+        score = getScoreAdvange(score);
+        if(pointPlayer1>=4 || pointPlayer2>=4)
+            score = getScoreWin(score,valor);
+        return score;
+    }
+
+    private String getScoreWin(String score,int valor) {
+        if (valor>=2)
         {
             score = "Win for player1";
         }
-        if (pointPlayer2>=4 && pointPlayer1>=0 && (pointPlayer2-pointPlayer1)>=2)
+        if (valor<=-2)
         {
             score = "Win for player2";
         }
         return score;
     }
-    
-    public void SetP1Score(int number){
-        
+
+    private String getScoreAdvange(String score) {
+        if (pointPlayer1 > pointPlayer2 && pointPlayer2 >= 3)
+        {
+            score = "Advantage player1";
+        }
+
+        if (pointPlayer2 > pointPlayer1 && pointPlayer1 >= 3)
+        {
+            score = "Advantage player2";
+        }
+        return score;
+    }
+
+    private String getScoreFrom0to3(String score) {
+        String[] listaScore={"Love","Fifteen","Thirty","Forty",""};
+        if(pointPlayer2==0 ||pointPlayer1==0)
+            score = getScorewith0(score, listaScore);
+
+
+        score = getScoreLessThan4(score, listaScore);
+
+        return score;
+    }
+
+    private String getScoreLessThan4(String score, String[] listaScore) {
+
+        if (pointPlayer1>pointPlayer2 && pointPlayer1 < 4)
+        {
+            resPlayer1=listaScore[pointPlayer1];
+            resPlayer2=listaScore[pointPlayer2];
+            score = resPlayer1 + "-" + resPlayer2;
+        }
+        if(pointPlayer2>pointPlayer1 && pointPlayer2 < 4)
+        {
+            resPlayer2=listaScore[pointPlayer2];
+            resPlayer1=listaScore[pointPlayer1];
+            score = resPlayer1 + "-" + resPlayer2;
+        }
+        return score;
+    }
+
+    private String getScorewith0(String score, String[] listaScore) {
+        if (pointPlayer1 > 0 )
+        {
+            resPlayer1=listaScore[pointPlayer1];
+            resPlayer2 = "Love";
+            score = resPlayer1 + "-" + resPlayer2;
+        }
+        if (pointPlayer2 > 0 )
+        {
+            resPlayer2 =listaScore[pointPlayer2];
+
+            resPlayer1 = "Love";
+            score = resPlayer1 + "-" + resPlayer2;
+        }
+        return score;
+    }
+
+    private String getScoreTie() {
+        String[] listaScore={"Love","Fifteen","Thirty"};
+        String score="Deuce";
+        if (pointPlayer1 == pointPlayer2 && pointPlayer1 <=2)
+        {
+            score = listaScore[pointPlayer1];
+            score += "-All";
+        }
+        return score;
+    }
+
+    public void setScorePlayer1(int number){
+
         for (int i = 0; i < number; i++)
         {
             addScorePlayer1();
@@ -111,7 +123,7 @@ public class TennisGame2 implements TennisGame
             
     }
     
-    public void SetP2Score(int number){
+    public void setScorePlayer2(int number){
         
         for (int i = 0; i < number; i++)
         {
