@@ -1,12 +1,7 @@
-import java.io.Console;
-
 public class TennisGame2 implements TennisGame
 {
-    private int pointPlayer1 = 0;
-    private int pointPlayer2 = 0;
-
-    private String resPlayer1 = "";
-    private String resPlayer2 = "";
+    private int pointPlayer1  = 0;
+    private int pointPlayer2  = 0;
 
     private final String playerName1;
     private final String playerName2;
@@ -18,131 +13,80 @@ public class TennisGame2 implements TennisGame
     }
 
     public String getScore(){
+        String[] listaScore={"Love","Fifteen","Thirty","Forty",""};
         String score = "";
-        score = getScoreTie();
-        score = getScoreFrom0to3(score);
-        int valor=pointPlayer1-pointPlayer2;
-        score = getScoreGreaterthan4(score,valor);
-        return score;
-    }
+        score = getScoreTie(listaScore);
 
-    private String getScoreGreaterthan4(String score,int valor) {
-        score = getScoreAdvange(score);
+        score = getScoreFrom0to3(score,listaScore);
         if(pointPlayer1>=4 || pointPlayer2>=4)
-            score = getScoreWin(score,valor);
+            score = getScoreMorethan3(score);
         return score;
     }
 
-    private String getScoreWin(String score,int valor) {
-        if (valor>=2)
+    private String getScoreMorethan3(String score) {
+        int isPlayer1MorePlayer2=this.pointPlayer1-pointPlayer2;
+        score = getScoreAdvantege(score,isPlayer1MorePlayer2);
+        score = getScoreWin(score,isPlayer1MorePlayer2);
+
+        return score;
+    }
+
+    private String getScoreWin(String score,int isPlayer1MorePlayer2) {
+
+        if (isPlayer1MorePlayer2>=2)
         {
             score = "Win for player1";
         }
-        if (valor<=-2)
+        if (isPlayer1MorePlayer2<=-2)
         {
             score = "Win for player2";
         }
         return score;
     }
 
-    private String getScoreAdvange(String score) {
-        if (pointPlayer1 > pointPlayer2 && pointPlayer2 >= 3)
+    private String getScoreAdvantege(String score,int isPlayer1MorePlayer2) {
+        if (isPlayer1MorePlayer2==1)
         {
             score = "Advantage player1";
         }
 
-        if (pointPlayer2 > pointPlayer1 && pointPlayer1 >= 3)
+        if (isPlayer1MorePlayer2==-1)
         {
             score = "Advantage player2";
         }
         return score;
     }
 
-    private String getScoreFrom0to3(String score) {
-        String[] listaScore={"Love","Fifteen","Thirty","Forty",""};
-        if(pointPlayer2==0 ||pointPlayer1==0)
-            score = getScorewith0(score, listaScore);
-
-
-        score = getScoreLessThan4(score, listaScore);
-
-        return score;
-    }
-
-    private String getScoreLessThan4(String score, String[] listaScore) {
-
-        if (pointPlayer1>pointPlayer2 && pointPlayer1 < 4)
-        {
-            resPlayer1=listaScore[pointPlayer1];
-            resPlayer2=listaScore[pointPlayer2];
-            score = resPlayer1 + "-" + resPlayer2;
-        }
-        if(pointPlayer2>pointPlayer1 && pointPlayer2 < 4)
-        {
-            resPlayer2=listaScore[pointPlayer2];
-            resPlayer1=listaScore[pointPlayer1];
-            score = resPlayer1 + "-" + resPlayer2;
+    private String getScoreFrom0to3(String score,String[] listaScore) {
+        if(pointPlayer1<4 && pointPlayer1!=pointPlayer2) {
+            String resPlayer1 = listaScore[pointPlayer1];
+            String resPlayer2 = listaScore[pointPlayer2];
+            score= resPlayer1 + "-" + resPlayer2;
         }
         return score;
     }
 
-    private String getScorewith0(String score, String[] listaScore) {
-        if (pointPlayer1 > 0 )
-        {
-            resPlayer1=listaScore[pointPlayer1];
-            resPlayer2 = "Love";
-            score = resPlayer1 + "-" + resPlayer2;
-        }
-        if (pointPlayer2 > 0 )
-        {
-            resPlayer2 =listaScore[pointPlayer2];
-
-            resPlayer1 = "Love";
-            score = resPlayer1 + "-" + resPlayer2;
-        }
-        return score;
-    }
-
-    private String getScoreTie() {
-        String[] listaScore={"Love","Fifteen","Thirty"};
-        String score="Deuce";
-        if (pointPlayer1 == pointPlayer2 && pointPlayer1 <=2)
-        {
+    private String getScoreTie(String[] listaScore) {
+       String score="Deuce";
+        if (pointPlayer1  == pointPlayer2 && pointPlayer1<3) {
             score = listaScore[pointPlayer1];
             score += "-All";
         }
         return score;
     }
 
-    public void setScorePlayer1(int number){
+    public void scorePlayer1(){
+        pointPlayer1 ++;
+    }
 
-        for (int i = 0; i < number; i++)
-        {
-            addScorePlayer1();
-        }
-            
+    public void scorePlayer2(){
+        pointPlayer2 ++;
     }
-    
-    public void setScorePlayer2(int number){
-        
-        for (int i = 0; i < number; i++)
-        {
-            addScorePlayer2();
-        }
-            
-    }
-    
-    public void addScorePlayer1(){
-        pointPlayer1++;
-    }
-    
-    public void addScorePlayer2(){pointPlayer2++;}
-
 
     public void wonPoint(String player) {
         if (player.equals(this.playerName1))
-            addScorePlayer1();
-        if(player.equals(this.playerName2))
-            addScorePlayer2();
+            scorePlayer1();
+        if (player.equals(this.playerName2))
+            scorePlayer2();
     }
 }
