@@ -23,23 +23,23 @@ public class TennisGame3 implements TennisGame {
     }
 
     private String getScoreNotTie(boolean isPlayerScoreEqual) {
-        String score= getScoreMore4(isPlayerScoreEqual);
+        String score= getScoreMore4();
         if (scorePlayer1 < 4 && scorePlayer2 < 4) {
             score = getScoreLess4(isPlayerScoreEqual);
         }
         return score;
     }
 
-    private String getScoreMore4(boolean isPlayerScoreEqual) {
+    private String getScoreMore4() {
         String score;
         String player = getPlayerWithMoreScore();
-        int Player1lessPlayer2=Math.abs(scorePlayer1-scorePlayer2);
-        score= getAdvantageorWin(player,Player1lessPlayer2);
+        int player1LessPlayer2=Math.abs(scorePlayer1-scorePlayer2);
+        score= getAdvantageOrWin(player,player1LessPlayer2);
         return score;
     }
 
-    private String getAdvantageorWin(String player,int Player1lessPlayer2) {
-        return ( Player1lessPlayer2== 1) ? "Advantage " + player : "Win for " + player;
+    private String getAdvantageOrWin(String player,int player1LessPlayer2) {
+        return ( player1LessPlayer2== 1) ? "Advantage " + player : "Win for " + player;
     }
 
     private String getPlayerWithMoreScore() {
