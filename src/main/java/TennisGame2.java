@@ -14,18 +14,18 @@ public class TennisGame2 implements TennisGame
 
     public String getScore(){
         String[] listaScore={"Love","Fifteen","Thirty","Forty",""};
-        String score = "";
+        String score ;
         score = getScoreTie(listaScore);
 
         score = getScoreFrom0to3(score,listaScore);
         if(pointPlayer1>=4 || pointPlayer2>=4)
-            score = getScoreMorethan3(score);
+            score = getScoreMoreThan3(score);
         return score;
     }
 
-    private String getScoreMorethan3(String score) {
+    private String getScoreMoreThan3(String score) {
         int isPlayer1MorePlayer2=this.pointPlayer1-pointPlayer2;
-        score = getScoreAdvantege(score,isPlayer1MorePlayer2);
+        score = getScoreAdvantage(score,isPlayer1MorePlayer2);
         score = getScoreWin(score,isPlayer1MorePlayer2);
 
         return score;
@@ -44,7 +44,7 @@ public class TennisGame2 implements TennisGame
         return score;
     }
 
-    private String getScoreAdvantege(String score,int isPlayer1MorePlayer2) {
+    private String getScoreAdvantage(String score,int isPlayer1MorePlayer2) {
         if (isPlayer1MorePlayer2==1)
         {
             score = "Advantage player1";
